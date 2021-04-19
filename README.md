@@ -84,3 +84,19 @@ Procédure
 Informations complémentaires
 Le nombre de likes/dislikes et les tableaux like/dislike doivent être mis à jour pour mettre en
 œuvre la fonctionnalité.
+
+#######################################FONCTIONNALITEES###########################################
+
+Cette API vous permet d'enregistrer les utilisateurs sur une base de données (mongoDB) en toute sécurité car crypter avec bcrypt,
+et d'y ajouter des sauces pour les partager sur la communauté.
+Vous pourrez par la suite mofifié ou suprrimer les sauces que vous avez poster
+
+
+#######################################UTILISATION################################################
+
+
+1. Lancer le backEnd avec la commande nodemon server
+2. Lancer le frontEnd avec la commande ng serve
+3. La base de données est configurer 
+4. Le MDP provisoire vous sera envoyé
+ 
