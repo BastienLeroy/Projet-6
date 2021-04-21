@@ -16,3 +16,5 @@ module.exports = (req, res, next) => {
     });
   }
 };
+
+//création du token avec jwt pour sécuriser id de l'utilisateur

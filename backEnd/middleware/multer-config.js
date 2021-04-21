@@ -18,3 +18,5 @@ const storage = multer.diskStorage({
 });
 
 module.exports = multer({storage: storage}).single('image');
+
+// permet d'afficher et de répertorié les images que les utilisateurs vont integrer à leurs sauces
