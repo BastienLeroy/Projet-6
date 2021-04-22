@@ -7,7 +7,7 @@ const authRoutes = require('./routes/auth');
 const sauceRoutes = require('./routes/sauce');
 
 
-mongoose.connect('mongodb+srv://Bastos:Gunblade31@cluster0.wj4lg.mongodb.net/Piquante?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://Bastos:Gunblade31@cluster0.wj4lg.mongodb.net/Piquante?retryWrites=true&w=majority', //chemin d'accées pour connect à la DB
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
