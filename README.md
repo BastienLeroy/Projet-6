@@ -98,5 +98,6 @@ Vous pourrez par la suite mofifié ou suprrimer les sauces que vous avez poster
 1. Lancer le backEnd avec la commande nodemon server
 2. Lancer le frontEnd avec la commande ng serve
 3. La base de données est configurer 
-4. Le MDP provisoire vous sera envoyé
+4. Le MDP provisoire pour mongoDB est : 69vLhhBBj8hajibs
+
  
