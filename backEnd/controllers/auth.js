@@ -2,53 +2,62 @@ const bcrypt = require('bcrypt');// requete des differents module
 const jwt = require('jsonwebtoken');
 const User = require('../models/auth');
 
+const passwordRegEx = RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})');
 
-exports.signup = (req, res, next) => {
-    console.log("req.body signup:", req.body);
 
+exports.signup = async (req, res, next) => {
+    const email = req.body.email;
     const password = req.body.password;
 
-    bcrypt.hash(password, 10)// permet de crypté le MDP
-        .then(hash => {
-            const user = new User({
-                email: req.body.email,
-                password: hash
-              });
-            user.save()// enregistre le MDP sur DB
-                .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-                .catch(error => {
-                    res.status(400).json({ error })// renvoi une erreur si problème rencontrer
-                });
-            })
-            .catch(error => {
-                res.status(500).json({ error });// renvoi une erreur si problème rencontrer
-                
-            });
-        };
-
-exports.login = (req, res, next) => {
-	User.findOne({user: req.body.user, email: req.body.email })//recupere et compare les mail utilisateur
-      .then(user => {
-        if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !' });//si mail non enregistrer dans DB alors rencois un message d'erreur
-        }
-        bcrypt.compare(req.body.password, user.password)//recupere et compare les MDP utilisateur
-          .then(valid => {
-            if (!valid) {
-              return res.status(401).json({ error: 'Mot de passe incorrect !' });//si MDP non reconnu dans DB alors rencois un message d'erreur
-            }
-            res.status(200).json({
-              userId: user._id,
-              token: jwt.sign(
-                { userId: user._id },
-                'RANDOM_TOKEN_SECRET',
-                { expiresIn: '24h' }
-              )
-            });
+    if (passwordRegEx.test(password)) {
+      try {
+        const emailHash = await bcrypt.hash(email, 10);
+        const passwordHash = await bcrypt.hash(password, 10);
+        const user = new User({
+          email: emailHash,
+          password: passwordHash
         })
-        .catch(error => {
-            console.log(error);
-            res.status(500).json({ error });
-            
-        });
-    })};
+  
+        await user.save();
+        res.status(201).json({ message: 'Utilisateur créé !' });
+  
+      } catch (err) {
+        res.status(400).json({ err })// renvoi une erreur si problème rencontrer
+      }
+    } else {
+      res.status(400).json({ message: "Veuillez entrer un mot de passe comprenant au minimum : 1 lettre majuscule et 1 minuscule, 1 chiffre, 1 caractère spécial, 6 caratères"});
+    }
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    const userList = await User.find();
+
+    const userValid = await Promise.all(
+      userList.map(async user => {
+        const compareUser = await bcrypt.compare(req.body.email, user.email);
+        
+        if(compareUser) {
+          const valid = await bcrypt.compare(req.body.password, user.password);
+
+          if(!valid) {
+            return res.status(401).json({ error: 'Mot de passe incorrect !' });//si MDP non reconnu dans DB alors rencois un message d'erreur
+          }
+      
+          res.status(200).json({
+            userId: user._id,
+            token: jwt.sign(
+              { userId: user._id },
+              process.env.RANDOM_TOKEN,
+              { expiresIn: '24h' }
+            )
+          });
+        }
+      })
+    )
+
+  } catch (err) {
+    console.log("err :", err);
+    res.status(500).json({ error: err });
+  }
+};
