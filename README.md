@@ -85,19 +85,33 @@ Informations complémentaires
 Le nombre de likes/dislikes et les tableaux like/dislike doivent être mis à jour pour mettre en
 œuvre la fonctionnalité.
 
-#######################################FONCTIONNALITEES###########################################
+#FONCTIONNALITEES
 
 Cette API vous permet d'enregistrer les utilisateurs sur une base de données (mongoDB) en toute sécurité car crypter avec bcrypt,
 et d'y ajouter des sauces pour les partager sur la communauté.
 Vous pourrez par la suite mofifié ou suprrimer les sauces que vous avez poster
 
 
-#######################################UTILISATION################################################
+#UTILISATION
 
 
 1. Lancer le backEnd avec la commande nodemon server
 2. Lancer le frontEnd avec la commande ng serve
 3. La base de données est configurer 
 4. Le MDP provisoire pour mongoDB est : 69vLhhBBj8hajibs
+
+#PRINCIPES DE SECURITE
+
+1 Injection --> clear xss / helmet / regex
+2 Piratage de session --> hash / jwt / regex
+3 Exposition de données sensibles --> hash / helmet
+4 Entités externes XML (XXE)--> allow controll origin --> local host 4200
+5 Contournement du contrôle d’accès --> hash / jwt /.env
+6 Security Misconfiguration --> helmet
+7 Cross-Site Scripting  (XSS) --> clear xss / helmet
+8 Désérialisation non sécurisée (Insecure Deserialisation) --> JSON.parse
+9 Utilisation de composants présentant des vulnérabilités connues --> Maintien a jour des modules
+10 Manque de surveillance et de monitoring --> Maintien a jour des modules
+
 
  
